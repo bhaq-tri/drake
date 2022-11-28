@@ -530,6 +530,13 @@ TEST_F(RenderClientTest, LoadColorImageGood) {
   EXPECT_EQ(rgba, CreateTestColorImage(false));
 }
 
+TEST_F(RenderClientTest, LoadColoredLabelImageGood) {
+  // Loading a four channel (RGBA) colored label PNG should work as expected.
+  ImageRgba8U colored_label_rgba(kTestImageWidth, kTestImageHeight, 0);
+  RenderClient::LoadColorImage(kTestColoredLabelImagePath, &colored_label_rgba);
+  EXPECT_EQ(colored_label_rgba, CreateTestColoredLabelImage());
+}
+
 TEST_F(RenderClientTest, LoadColorImageBad) {
   ImageRgba8U ignored(kTestImageWidth, kTestImageHeight, 0);
 
@@ -556,7 +563,7 @@ TEST_F(RenderClientTest, LoadColorImageBad) {
 
   // Failure case 4: wrong number of channels (== 1) instead of 3 or 4.
   DRAKE_EXPECT_THROWS_MESSAGE(
-      RenderClient::LoadColorImage(kTestLabelImagePath, &ignored),
+      RenderClient::LoadColorImage(kTestDepthImage16UPngPath, &ignored),
       ".*PNG image.*has 1 channel.*");
 }
 
